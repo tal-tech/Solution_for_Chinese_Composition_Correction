@@ -1,0 +1,2 @@
+/usr/bin/ar qc libxdg_mime.a  CMakeFiles/xdg_mime.dir/xdgmime.c.o CMakeFiles/xdg_mime.dir/xdgmimealias.c.o CMakeFiles/xdg_mime.dir/xdgmimecache.c.o CMakeFiles/xdg_mime.dir/xdgmimeglob.c.o CMakeFiles/xdg_mime.dir/xdgmimeicon.c.o CMakeFiles/xdg_mime.dir/xdgmimeint.c.o CMakeFiles/xdg_mime.dir/xdgmimemagic.c.o CMakeFiles/xdg_mime.dir/xdgmimeparent.c.o
+/usr/bin/ranlib libxdg_mime.a

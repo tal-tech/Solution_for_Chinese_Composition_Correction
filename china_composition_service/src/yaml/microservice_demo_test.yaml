@@ -1,0 +1,78 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: godhand-facial-focus-v2
+  namespace: godhand-godeye-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: godhand-facial-focus-v2
+  template:
+    metadata:
+      labels:
+        run: godhand-facial-focus-v2
+        appName: GODHAND-FACIAL-FOCUS
+    spec:
+      affinity:
+        #节点亲和性
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node/type
+                operator: In
+                values:
+                - AIDATA
+      tolerations:
+      - effect: NoExecute
+        key: AI_Common
+        operator: Equal
+        value: paas
+      containers:
+      - name: godhand-facial-focus-v2-containers
+        image: registry.cn-beijing.aliyuncs.com/ailab-paas/microservice_demo:1.6-20200222175449
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+        ports:
+        - containerPort: 8889
+        env:
+        - name: CURRENT_ENV
+          value: TEST
+        - name: APOLLO_HOST
+          value: http://godhand-apollo-config:8080
+        - name: APOLLO_APPLICATION
+          value: godhand-facial-focus
+        - name: SERVICE_TYPE
+          value: image
+        resources:
+          requests:
+            cpu: 1
+            memory: 1000Mi
+          limits:
+            cpu: 2
+            memory: 2000Mi
+      imagePullSecrets:
+            - name: godhand-regcred
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      #仅测试环境填写下面配置
+      nodeSelector:
+        product: paas
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: godhand-facial-focus-v2
+  namespace: godhand-godeye-test
+  labels:
+    run: godhand-facial-focus-v2
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8889
+  selector:
+    run: godhand-facial-focus-v2

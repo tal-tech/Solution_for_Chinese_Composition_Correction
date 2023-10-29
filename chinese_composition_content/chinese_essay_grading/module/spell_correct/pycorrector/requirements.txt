@@ -1,0 +1,5 @@
+jieba
+pypinyin
+kenlm
+numpy
+six

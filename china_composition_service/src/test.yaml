@@ -1,0 +1,98 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  annotations: {isService: 'true'}
+  name: image-quality-evaluation-v1
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: image-quality-evaluation-v1
+  template:
+    metadata:
+      labels:
+        run: image-quality-evaluation-v1
+        appName: IMAGE-QUALITY-EVALUATION
+    spec:
+      affinity:
+        #节点亲和性
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node/type
+                operator: In
+                values:
+                - AIGPU2
+      tolerations:
+      - effect: NoExecute
+        key: AI_GPU
+        operator: Equal
+        value: paas
+      containers:
+      - name: image-quality-evaluation-v1-containers
+        image: registry-vpc.cn-beijing.aliyuncs.com/ailab-paas/image_quality_evaluation:v1.0-20210308154715
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 8889
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 100
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+        ports:
+        - containerPort: 8889
+        env:
+        - name: CURRENT_ENV
+          value: PRE
+        - name: local_dump_dir
+          value: /tmp
+        - name: APOLLO_HOST
+          value: http://godhand-apollo-config:8080
+        - name: APOLLO_APPLICATION
+          value: image-quality-evaluation
+        - name: HOST_NAME
+          value: image-quality-evaluation-v1
+        - name: SERVICE_TYPE
+          value: image
+        resources:
+          requests:
+            cpu:  1000m
+            memory: 4000Mi
+            aliyun.com/gpu-mem: "4"
+          limits:
+            cpu:  4000m
+            memory: 8000Mi
+            aliyun.com/gpu-mem: "4"
+      imagePullSecrets:
+            - name: godhand-regcred
+      #nodeName: cn-beijing.i-2zea6sz3emarw899rae1
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        #kubernetes.io/hostname: 10.19.250.6
+        #node/gputype: P40
+        #node/type: GPU
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-quality-evaluation-v1
+  namespace: bp
+  labels:
+    run: image-quality-evaluation-v1
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8889
+  selector:
+    run: image-quality-evaluation-v1

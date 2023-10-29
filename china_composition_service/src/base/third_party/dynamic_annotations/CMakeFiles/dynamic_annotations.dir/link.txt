@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdynamic_annotations.a  CMakeFiles/dynamic_annotations.dir/dynamic_annotations.c.o
+/usr/bin/ranlib libdynamic_annotations.a

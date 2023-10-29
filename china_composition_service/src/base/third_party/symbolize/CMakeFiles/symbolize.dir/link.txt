@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsymbolize.a  CMakeFiles/symbolize.dir/demangle.cc.o CMakeFiles/symbolize.dir/symbolize.cc.o
+/usr/bin/ranlib libsymbolize.a

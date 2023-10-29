@@ -1,0 +1,9 @@
+model/rhetoric_multi_model.pt
+model/rhetoric_model/Analogy_PretrainedBert_1e-05_16_0.5.pt
+model/rhetoric_model/rhetoric_multi_model.pt
+model/rhetoric_model/Fanwen_PretrainedBert_1e-06_64_0.3.pt
+model/rhetoric_model/Shewen_PretrainedBert_1e-05_32_None.pt
+model/rhetoric_model/Parallel_PretrainedBert_1e-05_16.pt
+model/rhetoric_model/Niren_PretrainedBert_5e-06_48_None.pt
+model/rhetoric_model/Person_PretrainedBert_5e-05_64_None.pt
+model/bert_chinese_wwm_ext_pytorch/pytorch_model.bin

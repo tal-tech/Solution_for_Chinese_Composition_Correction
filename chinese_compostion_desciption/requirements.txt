@@ -1,0 +1,18 @@
+flask==1.0.2
+gunicorn==19.9.0
+py_eureka_client==0.5.3
+gevent==1.4.0
+torch==1.1.0
+pyltp==0.2.1
+pytorch_transformers==1.2.0
+scikit-learn==0.20.2
+
+jieba==0.39
+# pypinyin==0.34.0
+# kenlm==0.0.0
+# six==1.11.0
+pandas==0.25.3
+tensorflow==1.13.1
+keras==2.3.1
+bert4keras==0.9.8
+h5py==2.10
